@@ -1,33 +1,13 @@
-import { useEffect, useState } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Button } from '@heroui/react';
-import { defaultMemes, IMeme } from '../../data/memes';
+import { useState } from 'react';
+import { useMemeStorage } from '../../hooks/useMemeStorage';
+import { IMeme } from '../../data/memes';
 import { EditMemeModal } from '../EditMemeModal';
 
-const LOCAL_KEY = 'memeData';
-
 export function MemeTable() {
-  const [memes, setMemes] = useState<IMeme[]>([]);
+  const { memes, setMemes } = useMemeStorage();
   const [selectedMeme, setSelectedMeme] = useState<IMeme | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    const stored = localStorage.getItem(LOCAL_KEY);
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (Array.isArray(parsed)) setMemes(parsed);
-        else setMemes(defaultMemes);
-      } catch {
-        setMemes(defaultMemes);
-      }
-    } else {
-      setMemes(defaultMemes);
-    }
-  }, []);
-
-  const saveToStorage = (updated: IMeme[]) => {
-    localStorage.setItem(LOCAL_KEY, JSON.stringify(updated));
-  };
 
   const handleEditClick = (meme: IMeme) => {
     setSelectedMeme(meme);
@@ -37,7 +17,6 @@ export function MemeTable() {
   const handleSave = (updatedMeme: IMeme) => {
     const updated = memes.map(m => (m.id === updatedMeme.id ? updatedMeme : m));
     setMemes(updated);
-    saveToStorage(updated);
     setSelectedMeme(updatedMeme);
   };
 

@@ -1,24 +1,10 @@
-import { Route, Routes } from 'react-router-dom';
-import { TablePage } from './pages/TablePage';
-import { ListPage } from './pages/ListPage';
-import { AppNavbar } from './components/AppNavbar';
+import { Layout } from './layout/Layout';
+import { AppRoutes } from './routes/AppRoutes';
 
 export default function App() {
   return (
-    <>
-      <AppNavbar />
-      <main className='p-4 max-w-7xl mx-auto '>
-        <Routes>
-          <Route
-            path='/'
-            element={<TablePage />}
-          />
-          <Route
-            path='/list'
-            element={<ListPage />}
-          />
-        </Routes>
-      </main>
-    </>
+    <Layout>
+      <AppRoutes />
+    </Layout>
   );
 }
